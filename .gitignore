@@ -1,0 +1,14 @@
+#configuration jetbrain
+.idea/
+composer.lock
+
+#fichier de configuration de la connexion a la base de donnees
+app/config/config.php
+
+# fichier de configuration usersDB
+app/config/usersDB/users.config.php
+
+#dossier vendor
+vendor/
+
+tmp/
