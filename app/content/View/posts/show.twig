@@ -1,0 +1,11 @@
+{% extends _layout %}
+
+{% block title %}Article - {{ post.title }}{% endblock %}
+
+{% block content %}
+    <div class="row section">
+        <h3 class="blue-text">{{ post.title }}</h3>
+        <p class="flow-text">{{ post.description }}</p>
+        <p class="blue-text">Rédacteur : {{ post.author }}</p>
+    </div>
+{% endblock %}

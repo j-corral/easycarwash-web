@@ -1,0 +1,30 @@
+@charset "UTF-8";
+
+#slide-out li:hover{
+	background-color: #039BE5 !important;
+}
+
+#slide-out li.active{
+	background-color: #212121 !important;
+}
+
+.side-link:hover {
+	color: #fff;
+}
+
+.add-btn {
+	bottom: 80px;
+	right: 40px;
+}
+
+/*
+header, main, footer {
+	margin-left: 240px !important;
+}
+
+@media only screen and (max-width : 992px) {
+	header, main, footer {
+		padding-left: 0;
+	}
+}
+*/

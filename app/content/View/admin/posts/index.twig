@@ -1,0 +1,14 @@
+{% extends _layout %}
+
+{% block title %} Admin{% endblock %}
+
+{% block content %}
+    <h3>Welcome !</h3>
+
+    <p>User ID : {{ getAuth('id') }}</p>
+
+
+    {% if getAuth('dbuser') != 'client' %}
+
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,20 @@
+RewriteEngine On
+RewriteBase /webroot/
+
+# Empêche de lister le contenu des dossiers
+Options -Indexes
+
+# Url Rewriting
+# Activation de l'url rewriting
+
+
+# Empêche l'accès aux fichiers .php sauf index.php
+ <Files ~ "[^index]\.php$">
+  Order Allow,Deny
+  Deny from All
+ </Files>
+
+
+
+
+RewriteRule ^([a-zA-Z0-9\-\_\/]+)$ index.php?p=$1 [QSA,L] # Règle de réécriture

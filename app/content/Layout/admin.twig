@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr">
+<head>
+    <!-- META -->
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+
+    <!-- TITLE -->
+    <title>{{ getTitle() }} : {% block title %}{% endblock %}</title>
+
+    <!-- Materialize core CSS -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    {#<link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/css/materialize.min.css" rel="stylesheet">#}
+    <link href="{{ css('materialize.min') }}" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="{{ css('default') }}" rel="stylesheet">
+
+    <!-- Admin Css -->
+    <link href="{{ css('admin') }}" rel="stylesheet">
+
+    <!-- Favicon -->
+    <link rel="icon" href="{{ img('logo.png') }}">
+</head>
+<body>
+
+<!-- NAVIGATION -->
+<nav class="navbar  blue darken-4">
+    <div class="nav-wrapper ">
+        <a href="{{ url('admin') }}" class="brand-logo center">
+            <img id="header-logo" alt="Logo" class="left" src="{{ img('logo-nav.png') }}">
+            <span class="right">Easy Car Wash</span>
+        </a>
+
+        <!-- panel-menu-button -->
+        <a href="#" data-activates="slide-out" class="button-collapse show-on-large left"><i
+                    class="material-icons">menu</i></a>
+
+        <ul class="side-nav" id="mobile-demo">
+            <li>
+                <a href="{{ url('users.login') }}">
+                    Login
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<!-- CONTENT -->
+<main class="container">
+    <ul id="slide-out" class="side-nav blue-grey darken-4">
+
+        <!-- Compte -->
+        <li class="no-padding">
+            <ul class="collapsible collapsible-accordion">
+                <li>
+                    <a class="collapsible-header white-text"><i class="material-icons">person</i>Account</a>
+                    <div class="collapsible-body">
+                        <ul>
+                            <li><a href="{{ url('users.logout') }}">Logout</a></li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </li>
+
+        <!-- Front -->
+        <li class="no-padding"><a href="{{ url('home') }}" class="collapsible-header side-link white-text"><i
+                        class="material-icons">visibility</i>View website</a></li>
+
+        <!-- Separator -->
+        <hr class="blue-text text-darken-1">
+        <br>
+
+        <!-- Utilisateurs -->
+        {% if hasAccess('users.index') or hasAccess('users.index') %}
+            <li class="no-padding">
+                <ul class="collapsible collapsible-accordion">
+                    <li>
+                        <a class="collapsible-header white-text"><i class="material-icons">supervisor_account</i>Users</a>
+                        <div class="collapsible-body">
+                            <ul>
+                                {% if hasAccess('users.index') %}
+                                    <li><a href="{{ url('admin.users.index') }}" class="side-link">List</a></li>
+                                {% endif %}
+                                {% if hasAccess('users.create') %}
+                                    <li><a href="{{ url('admin.users.create') }}" class="side-link">Add</a></li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </li>
+        {% endif %}
+
+    </ul>
+
+
+    {% block content %}{% endblock %}
+</main> <!-- /main -->
+
+<!-- FOOTER -->
+<footer class="page-footer blue darken-4">
+    <div class="footer-copyright">
+        <div class="container">
+            © {{ getTitle() }} - 2017
+            <div class="grey-text text-lighten-4 right">
+                <!-- DEBUG -->
+                {% if config_get('debug') > 0 %}
+                    {{ call_static('Core\\Helper\\Debug', 'getDebug') }}
+                    Execution Time : {{ app_function('getExecutionTime') | number_format(5) }} seconds
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script type="text/javascript">
+    window.base_url = '{{ getBaseUrl() }}';
+</script>
+
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="{{ js('loader') }}"></script>
+<script src="{{ js('app') }}"></script>
+{% block script %}{% endblock %}
+</body>
+</html>
