@@ -63,6 +63,10 @@ class Controller {
 
 		$view = str_replace( '.', '/', $view );
 
+		if(defined('REST') && REST === true) {
+			$this->renderJson($vars, $view, $engine);
+		}
+
 		switch ( $engine ) {
 			case 'twig':
 				$this->renderTwig( $view, $vars );
@@ -111,6 +115,33 @@ class Controller {
 	}
 
 
+	public function renderJson($data, $view = null, $engine = "twig") {
+
+		if($view != null) {
+
+			$ext = "." . strtolower($engine);
+
+			if(!$this->checkView($view, $ext)) {
+				$data = array(
+					"code" => "rest_no_route",
+					"message" => "Route not found !",
+					"data" => array(
+						"status" => "404"
+					)
+				);
+				http_response_code(404);
+			}
+		}
+
+
+		header('Cache-Control: no-cache, must-revalidate');
+		header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+		header('Content-type: application/json');
+		echo json_encode($data);
+		exit(0);
+	}
+
+
 	/**
 	 * @param $view
 	 * @param string $ext
@@ -126,6 +157,11 @@ class Controller {
 
 
 		if (!file_exists (ROOT . VIEW . $view . $ext)) {
+
+			if(defined('REST') && REST === true) {
+				return false;
+			}
+
 			throw new RouterException("Unknown View : $view.$ext");
 		}
 
@@ -200,14 +236,22 @@ class Controller {
 
 
 	protected function showMessage( $msg, $send = "", $redirection = "" ) {
+
+		$retour['msg']         = $msg;
+		$retour['send']        = $send;
+		$retour['redirection'] = $redirection;
+
+		if($this->isRest()) {
+			$this->renderJson($retour);
+		}
+
 		// Les messages d"erreurs ci-dessus s'afficheront si Javascript est désactivé
 		header( 'Cache-Control: no-cache, must-revalidate' );
 		header( 'Expires: Mon, 26 Jul 1997 05:00:00 GMT' );
 		header( 'Content-type: application/json' );
 
-		$retour['msg']         = $msg;
-		$retour['send']        = $send;
-		$retour['redirection'] = $redirection;
+
+
 		echo json_encode( $retour );
 		exit;
 
@@ -278,6 +322,20 @@ class Controller {
 		];
 
 		return $data;
+	}
+
+
+	/**
+	 * Check if request is in REST mode
+	 * @return bool
+	 */
+	protected function isRest() {
+
+		if(defined('REST') && REST === true) {
+			return true;
+		}
+
+		return false;
 	}
 
 }

@@ -92,7 +92,7 @@ class UsersController extends AppController {
 
 		$pseudo     = filter_var( $form->pseudo, FILTER_SANITIZE_STRING );
 		$email      = filter_var( $form->email, FILTER_SANITIZE_EMAIL );
-		$salt       = sha1( uniqid( true ) );
+		$salt       = hash("sha512", uniqid(true));
 
 		$firstname  = filter_var( $form->firstname, FILTER_SANITIZE_STRING );
 		$lastname   = filter_var( $form->lastname, FILTER_SANITIZE_STRING );

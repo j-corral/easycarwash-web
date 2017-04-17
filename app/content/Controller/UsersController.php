@@ -37,23 +37,29 @@
 
             $auth = new DBAuth(App::getDBInstance ());
 
-            if ($auth->logged ()) {
+
+	        if (!$this->isRest() && $auth->logged ()) {
                 //App::getInstance ()->redirect ($_GET['p']);
                 $this->setBackoffice();
             }
 
-            if (isset($_POST['data']) && !empty($_POST['data'])) {
 
-                if (!$this->check_csrf ($_POST['data']['User']['token'])) {
-                    return false;
-                }
+	        if (isset($_POST['data']) && !empty($_POST['data'])) {
+
+            	// bypass csrf check for rest
+	            if (!$this->isRest() && !$this->check_csrf ($_POST['data']['User']['token'])) {
+		            return false;
+	            }
 
                 if ($auth->login ($_POST['data']['User']['email'], $_POST['data']['User']['password'])) {
-                    $this->showMessage('', "ok", Html::link('admin'));
+
+                	$this->showMessage('', "ok", Html::link('admin'));
                 } else {
+
                     $this->showMessage('Email ou mot de passe invalide !');
                 }
             }
+
             $this->render ('users.login');
         }
 

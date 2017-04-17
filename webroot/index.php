@@ -4,6 +4,7 @@
     /* GLOBAL */
     define ('DS', DIRECTORY_SEPARATOR);
     define ('ROOT', dirname (__FILE__) . DS . '..' . DS);
+    define ('REST', false);
 
     /* APP */
     define ('APP', 'app' . DS);
